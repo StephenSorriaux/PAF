@@ -1,3 +1,9 @@
+# PAF v2.3 rc1
+
+Release date: WIP
+
+* new: changing master score following the current timeline
+
 # PAF v2.2.0
 
 Release date: 2017-09-12
@@ -101,4 +107,3 @@ Release date: 2016-04-27
 Release date: 2016-03-02
 
 * First public release
-

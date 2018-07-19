@@ -12,7 +12,7 @@ OCF_Functions - helper subroutines for OCF agent
 
   use FindBin;
   use lib "$FindBin::RealBin/../../lib/heartbeat/";
-  
+
   use OCF_Functions;
 
 =head1 DESCRIPTION
@@ -96,7 +96,7 @@ use OCF_Directories;
 BEGIN {
     use Exporter;
 
-    our $VERSION   = 'v2.2.0';
+    our $VERSION   = 'v2.3_rc1';
     our @ISA       = ('Exporter');
     our @EXPORT    = qw(
         $__OCF_ACTION
@@ -257,7 +257,7 @@ sub ha_debug {
         else {
             printf STDERR "%s\n", join ' ', @ARG;
         }
-        
+
         return 0;
     }
 
@@ -394,7 +394,7 @@ sub ocf_is_ver {
 
 sub ocf_ver2num {
     my $v = 0;
-    
+
     $v = $v * 1000 + $1 while $ARG[0] =~ /(\d+)/g;
 
     return $v;
@@ -431,7 +431,7 @@ sub ocf_version_cmp {
     my $v1_level;
     my $v2_level;
     my $level_diff;
-    
+
     return 3 unless ocf_is_ver( $v1 );
     return 3 unless ocf_is_ver( $v2 );
 

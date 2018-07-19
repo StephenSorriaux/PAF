@@ -1,14 +1,14 @@
-%global _tag 2.2.0
+%global _tag 2.3_rc1
 %global _ocfroot /usr/lib/ocf
 Name: resource-agents-paf
-Version: 2.2.0
+Version: 2.3~rc1
 Release: 1
 Summary: PostgreSQL resource agent for Pacemaker
 License: PostgreSQL
 Group: Applications/Databases
 Url: http://clusterlabs.github.io/PAF/
 
-Source0: https://github.com/ClusterLabs/PAF/archive/v%{_tag}.tar.gz
+Source0: https://github.com/StephenSorriaux/PAF/archive/v%{_tag}.tar.gz
 BuildArch: noarch
 BuildRequires: resource-agents perl perl-Module-Build
 Requires: perl, resource-agents, pacemaker >= 1.1.13, corosync >= 2.0.0
@@ -30,8 +30,8 @@ find "%{buildroot}" -type f -name .packlist -delete
 
 %files
 %defattr(-,root,root,0755)
-%doc README.md 
-%doc CHANGELOG.md 
+%doc README.md
+%doc CHANGELOG.md
 %license LICENSE
 %{_mandir}/man3/*.3*
 %{_mandir}/man7/*.7*
@@ -42,6 +42,9 @@ find "%{buildroot}" -type f -name .packlist -delete
 %{_datadir}/resource-agents/ocft/configs/pgsqlms
 
 %changelog
+* Thu Jul 19 2018 Stephen Sorriaux <stephen.sorriaux@gmail.com> - 2.3rc1-1
+- 2.3_rc1 release candidate
+
 * Tue Sep 12 2017 Jehan-Guillaume de Rorthais <jgdr@dalibo.com> - 2.2.0-1
 - 2.2.0 major release
 
@@ -86,4 +89,3 @@ find "%{buildroot}" -type f -name .packlist -delete
 
 * Tue Mar 01 2016 Jehan-Guillaume de Rorthais <jgdr@dalibo.com> 0.99.0-1
 - Initial version
-

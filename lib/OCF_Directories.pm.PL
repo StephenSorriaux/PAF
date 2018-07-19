@@ -7,7 +7,7 @@ use Config;
 use File::Spec;
 use Storable;
 
-my $VERSION = 'v2.2.0';
+my $VERSION = 'v2.3_rc1';
 
 my $_ocf_dirs = File::Spec->tmpdir."/ocf_dirs.bin";
 
@@ -32,7 +32,7 @@ OCF_Directories - Binaries and binary options for use in Resource Agents
 
   use FindBin;
   use lib "\$FindBin::RealBin/../../lib/heartbeat/";
-  
+
   use OCF_Directories;
 
 =head1 DESCRIPTION
