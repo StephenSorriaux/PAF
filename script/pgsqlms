@@ -36,7 +36,7 @@ use OCF_ReturnCodes;
 use OCF_Directories;
 use OCF_Functions;
 
-our $VERSION = 'v2.3_rc1';
+our $VERSION = 'v2.3_rc2';
 our $PROGRAM = 'pgsqlms';
 
 # OCF environment
@@ -226,17 +226,18 @@ sub _get_lag_scores {
     # "pg_stat_replication" view.
     # The row_number applies on the result set ordered on write_location ASC so
     # the highest row_number should be given to the closest node from the
-    # master, then the lowest node name (alphanumeric sort) in case of equality.
+    # master, then the lowest sync_priority (sync slave or potential slave) in case of equality,
+    # and finally the lowest node name (alphanumeric sort).
     # The result set itself is order by priority DESC to process best known
     # candidate first.
     $query = qq{
-      SELECT application_name, priority, location, state, current_lag
+      SELECT application_name, priority, location, state, current_lag, sync_priority
       FROM (
         SELECT application_name,
           (1000 - (
             row_number() OVER (
               PARTITION BY state IN ('startup', 'backup')
-              ORDER BY location ASC, application_name ASC
+              ORDER BY location ASC, sync_priority ASC, application_name ASC
             ) - 1
            ) * 10
           ) * CASE WHEN ( $maxlag > 0
@@ -244,11 +245,12 @@ sub _get_lag_scores {
                         THEN -1
                    ELSE 1
               END AS priority,
-          location, state, current_lag
+          location, state, current_lag, sync_priority
         FROM (
           SELECT application_name, $write_lsn AS location, state,
-            $pg_wal_lsn_diff($pg_current_wal_lsn, $write_lsn) AS current_lag
+            $pg_wal_lsn_diff($pg_current_wal_lsn, $write_lsn) AS current_lag, sync_priority
           FROM pg_stat_replication
+          WHERE replay_lsn IS NOT NULL
         ) AS s2
       ) AS s1
       ORDER BY priority DESC
